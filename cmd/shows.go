@@ -116,26 +116,108 @@ func DownloadEpisode(episodeId string, quality int) {
 	episodeTitle := episodeDetails["analyticsEpisodeTitle"].(string)
 	m3u8VodUrl := episodeDetails["videoM3u8Url"].(string)
 	m3u8VodBaseUrl := strings.Replace(m3u8VodUrl, ".m3u8", "", 1)
-	m3u81080pUrl := m3u8VodBaseUrl + "_2500.m3u8"
-	m3u8720pUrl := m3u8VodBaseUrl + "_750.m3u8"
 
 	if quality == 1080 {
-		ffmpegHandler := ffmpeg.Input(m3u81080pUrl).
-			Output(episodeTitle + "_1080.mp4").OverWriteOutput().Run()
-		if ffmpegHandler != nil {
-			fmt.Println(ffmpegHandler)
-		} else {
-			fmt.Println("Download Successful!")
-		}
+		downloadWithFFmpeg(m3u8VodBaseUrl, "_2500.m3u8", episodeTitle+"_1080.mp4", "1080")
 
 	} else if quality == 720 {
-		ffmpegHandler := ffmpeg.Input(m3u8720pUrl).
-			Output(episodeTitle + "_720.mp4").OverWriteOutput().Run()
-		if ffmpegHandler != nil {
-			fmt.Println(ffmpegHandler)
-		} else {
-			fmt.Println("Download Successful!")
-		}
+		downloadWithFFmpeg(m3u8VodBaseUrl, "_750.m3u8", episodeTitle+"_720.mp4", "720")
 	}
 
+}
+
+func downloadWithFFmpeg(Url string, Extension string, Filename string, Quality string) {
+	if Quality == "1080" {
+		switch Extension {
+		case "_2500.m3u8":
+			ffmpegHandler := ffmpeg.Input(Url + "_2500.m3u8").
+				Output(Filename).OverWriteOutput().Run()
+			if ffmpegHandler != nil {
+				fmt.Printf("Couldn't download with %s quality: %v\n", Extension, ffmpegHandler)
+				fmt.Printf("\nTrying with %s quality\n", "1500")
+				downloadWithFFmpeg(Url, "_1500.m3u8", Filename, "1080")
+			} else {
+				fmt.Println("Download Successful!")
+			}
+		case "_1500.m3u8":
+			ffmpegHandler := ffmpeg.Input(Url + "_1500.m3u8").
+				Output(Filename).OverWriteOutput().Run()
+			if ffmpegHandler != nil {
+				fmt.Printf("Couldn't download with %s quality: %v\n", Extension, ffmpegHandler)
+				fmt.Printf("\nTrying with %s quality\n", "1000")
+				downloadWithFFmpeg(Url, "_1000.m3u8", Filename, "1080")
+			} else {
+				fmt.Println("Download Successful!")
+			}
+		case "_1000.m3u8":
+			ffmpegHandler := ffmpeg.Input(Url + "_1000.m3u8").
+				Output(Filename).OverWriteOutput().Run()
+			if ffmpegHandler != nil {
+				fmt.Printf("Couldn't download with %s quality: %v\n", Extension, ffmpegHandler)
+				fmt.Printf("\nTrying with %s quality\n", "750")
+				downloadWithFFmpeg(Url, "_750.m3u8", Filename, "1080")
+			} else {
+				fmt.Println("Download Successful!")
+			}
+		case "_750.m3u8":
+			ffmpegHandler := ffmpeg.Input(Url + "_750.m3u8").
+				Output(Filename).OverWriteOutput().Run()
+			if ffmpegHandler != nil {
+				fmt.Printf("Couldn't download with %s quality: %v\n", Extension, ffmpegHandler)
+				fmt.Printf("\nTrying with %s quality\n", "500")
+				downloadWithFFmpeg(Url, "_500.m3u8", Filename, "1080")
+			} else {
+				fmt.Println("Download Successful!")
+			}
+		case "_500.m3u8":
+			ffmpegHandler := ffmpeg.Input(Url + "_500.m3u8").
+				Output(Filename).OverWriteOutput().Run()
+			if ffmpegHandler != nil {
+				fmt.Printf("Couldn't download with %s quality: %v\n", Extension, ffmpegHandler)
+			} else {
+				fmt.Println("Download Successful!")
+			}
+		}
+	} else if Quality == "720" {
+		switch Extension {
+		case "_750.m3u8":
+			ffmpegHandler := ffmpeg.Input(Url + "_750.m3u8").
+				Output(Filename).OverWriteOutput().Run()
+			if ffmpegHandler != nil {
+				fmt.Printf("Couldn't download with %s quality: %v\n", Extension, ffmpegHandler)
+				fmt.Printf("\nTrying with %s quality\n", "1000")
+				downloadWithFFmpeg(Url, "_1000.m3u8", Filename, "720")
+			} else {
+				fmt.Println("Download Successful!")
+			}
+		case "_1000.m3u8":
+			ffmpegHandler := ffmpeg.Input(Url + "_1000.m3u8").
+				Output(Filename).OverWriteOutput().Run()
+			if ffmpegHandler != nil {
+				fmt.Printf("Couldn't download with %s quality: %v\n", Extension, ffmpegHandler)
+				fmt.Printf("\nTrying with %s quality\n", "1500")
+				downloadWithFFmpeg(Url, "_1500.m3u8", Filename, "720")
+			} else {
+				fmt.Println("Download Successful!")
+			}
+		case "_1500.m3u8":
+			ffmpegHandler := ffmpeg.Input(Url + "_1500.m3u8").
+				Output(Filename).OverWriteOutput().Run()
+			if ffmpegHandler != nil {
+				fmt.Printf("Couldn't download with %s quality: %v\n", Extension, ffmpegHandler)
+				fmt.Printf("\nTrying with %s quality\n", "2500")
+				downloadWithFFmpeg(Url, "_2500.m3u8", Filename, "720")
+			} else {
+				fmt.Println("Download Successful!")
+			}
+		case "_2500.m3u8":
+			ffmpegHandler := ffmpeg.Input(Url + "_2500.m3u8").
+				Output(Filename).OverWriteOutput().Run()
+			if ffmpegHandler != nil {
+				fmt.Printf("Couldn't download with %s quality: %v\n", Extension, ffmpegHandler)
+			} else {
+				fmt.Println("Download Successful!")
+			}
+		}
+	}
 }

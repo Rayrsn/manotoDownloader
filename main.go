@@ -75,9 +75,9 @@ func main() {
 	fmt.Scanln(&episodeIdInput)
 
 	var qualityInput string
-	fmt.Println("Select Quality:")
 	fmt.Println("1. 1080p")
 	fmt.Println("2. 720p")
+	fmt.Print("\nSelect Quality: ")
 	fmt.Scanln(&qualityInput)
 
 	clearTerm()

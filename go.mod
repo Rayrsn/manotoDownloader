@@ -11,6 +11,7 @@ require (
 )
 
 require (
+	github.com/grafov/m3u8 v0.11.1
 	github.com/u2takey/ffmpeg-go v0.4.1
 	golang.org/x/sys v0.0.0-20210331175145-43e1dd70ce54 // indirect
 )
