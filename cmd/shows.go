@@ -23,6 +23,7 @@ func SearchForResults(searchString string) map[string]interface{} {
 	res, err := http.DefaultClient.Do(req)
 
 	if err != nil {
+		fmt.Println("Failed to get search results")
 		fmt.Println(err)
 		os.Exit(1)
 	}
@@ -38,6 +39,7 @@ func SearchResultList(searchString string) []interface{} {
 	var details = results["details"].(map[string]interface{})
 	var list = details["list"].([]interface{})
 	if len(list) == 0 {
+		fmt.Println("Failed to get search results list")
 		fmt.Println("No results found")
 		os.Exit(1)
 	}
@@ -56,7 +58,9 @@ func GetSeriesList(showId string) []interface{} {
 	url := seriesListApiUrl + showId
 	response, err := http.Get(url)
 	if err != nil {
+		fmt.Println("Failed to get season results")
 		fmt.Println(err)
+		os.Exit(1)
 	}
 	var episodes map[string]interface{}
 	json.NewDecoder(response.Body).Decode(&episodes)
@@ -78,7 +82,9 @@ func GetEpisodeList(seriesId string) interface{} {
 	url := episodeListApiUrl + seriesId
 	response, err := http.Get(url)
 	if err != nil {
+		fmt.Println("Failed to get episode results list")
 		fmt.Println(err)
+		os.Exit(1)
 	}
 	var episode map[string]interface{}
 	json.NewDecoder(response.Body).Decode(&episode)
@@ -100,7 +106,9 @@ func DownloadEpisode(episodeId string, quality int) {
 	url := episodeDetailApiUrl + episodeId
 	response, err := http.Get(url)
 	if err != nil {
+		fmt.Println("Failed to download episode")
 		fmt.Println(err)
+		os.Exit(1)
 	}
 	var episode map[string]interface{}
 	json.NewDecoder(response.Body).Decode(&episode)
