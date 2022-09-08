@@ -116,12 +116,17 @@ func DownloadEpisode(episodeId string, quality int) {
 			Output(episodeTitle + "_1080.mp4").OverWriteOutput().Run()
 		if ffmpegHandler != nil {
 			fmt.Println(ffmpegHandler)
+		} else {
+			fmt.Println("Download Successful!")
 		}
+
 	} else if quality == 720 {
 		ffmpegHandler := ffmpeg.Input(m3u8720pUrl).
 			Output(episodeTitle + "_720.mp4").OverWriteOutput().Run()
 		if ffmpegHandler != nil {
 			fmt.Println(ffmpegHandler)
+		} else {
+			fmt.Println("Download Successful!")
 		}
 	}
 
