@@ -17,7 +17,7 @@ const episodeListApiUrl = "https://dt6ka97rrh6d5.cloudfront.net/api/v1/publicrol
 const episodeDetailApiUrl = "https://dt6ka97rrh6d5.cloudfront.net/api/v1/publicrole/showmodule/episodedetails?id="
 
 // Internal function to get search results
-func SearchForResults(searchString string) map[string]interface{} {
+func searchForResults(searchString string) map[string]interface{} {
 	payload := strings.NewReader(fmt.Sprintf(`{"SearchText":"%s","SlideType":"show","PageNumber":1,"PageSize":10,"SortBy":"az"}`, searchString))
 	req, _ := http.NewRequest("POST", searchApiUrl, payload)
 	req.Header.Add("Content-Type", "application/json;charset=utf-8")
@@ -37,7 +37,7 @@ func SearchForResults(searchString string) map[string]interface{} {
 
 // Returns a list of the results from SearchForResults
 func SearchResultList(searchString string) []interface{} {
-	results := SearchForResults(searchString)
+	results := searchForResults(searchString)
 	var details = results["details"].(map[string]interface{})
 	var list = details["list"].([]interface{})
 	if len(list) == 0 {
