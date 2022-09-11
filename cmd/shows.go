@@ -16,6 +16,7 @@ const seriesListApiUrl = "https://dt6ka97rrh6d5.cloudfront.net/api/v1/publicrole
 const episodeListApiUrl = "https://dt6ka97rrh6d5.cloudfront.net/api/v1/publicrole/showmodule/episodelist?id="
 const episodeDetailApiUrl = "https://dt6ka97rrh6d5.cloudfront.net/api/v1/publicrole/showmodule/episodedetails?id="
 
+// Internal function to get search results
 func SearchForResults(searchString string) map[string]interface{} {
 	payload := strings.NewReader(fmt.Sprintf(`{"SearchText":"%s","SlideType":"show","PageNumber":1,"PageSize":10,"SortBy":"az"}`, searchString))
 	req, _ := http.NewRequest("POST", searchApiUrl, payload)
