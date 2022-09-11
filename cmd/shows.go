@@ -34,6 +34,7 @@ func SearchForResults(searchString string) map[string]interface{} {
 	return results
 }
 
+// Returns a list of the results from SearchForResults
 func SearchResultList(searchString string) []interface{} {
 	results := SearchForResults(searchString)
 	var details = results["details"].(map[string]interface{})
@@ -46,14 +47,17 @@ func SearchResultList(searchString string) []interface{} {
 	return list
 }
 
+// Gets SlideTitle from the api
 func GetSlideTitle(searchlist []interface{}, index int) string {
 	return searchlist[index].(map[string]interface{})["SlideTitle"].(string)
 }
 
+// Gets SlideId from the api
 func GetSlideId(searchlist []interface{}, index int) string {
 	return searchlist[index].(map[string]interface{})["SlideId"].(string)
 }
 
+// Returns a list of the seasons
 func GetSeriesList(showId string) []interface{} {
 	url := seriesListApiUrl + showId
 	response, err := http.Get(url)
@@ -68,6 +72,7 @@ func GetSeriesList(showId string) []interface{} {
 	return seriesList.([]interface{})
 }
 
+// Returns the id of the season number specified
 func GetSeriesId(seriesList interface{}, seasonNumber string) string {
 	for i := range seriesList.([]interface{}) {
 		if seriesList.([]interface{})[i].(map[string]interface{})["analyticsSeasonNumber"] == seasonNumber {
@@ -78,6 +83,7 @@ func GetSeriesId(seriesList interface{}, seasonNumber string) string {
 	return "0"
 }
 
+// Returns a list of the episodes
 func GetEpisodeList(seriesId string) interface{} {
 	url := episodeListApiUrl + seriesId
 	response, err := http.Get(url)
@@ -102,6 +108,7 @@ func GetEpisodes(slideId string, index int) interface{} {
 	return episodeList
 }
 
+// Downloads episodes
 func DownloadEpisode(episodeId string, quality int) {
 	url := episodeDetailApiUrl + episodeId
 	response, err := http.Get(url)
@@ -123,9 +130,9 @@ func DownloadEpisode(episodeId string, quality int) {
 	} else if quality == 720 {
 		downloadWithFFmpeg(m3u8VodBaseUrl, "_750.m3u8", episodeTitle+"_720.mp4", "720")
 	}
-
 }
 
+// Internal function to download the episode using ffmpeg
 func downloadWithFFmpeg(Url string, Extension string, Filename string, Quality string) {
 	if Quality == "1080" {
 		switch Extension {
